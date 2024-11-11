@@ -1,5 +1,8 @@
+use include_dir::{include_dir, Dir};
 use serde::{Deserialize, Serialize};
 use std::{collections::HashMap, env, error::Error, path::PathBuf};
+
+static DATA_DIR: Dir<'_> = include_dir!("$CARGO_MANIFEST_DIR/source-data/data");
 
 /// The `Zengin` struct represents a collection of banks and their branches.
 ///
@@ -25,16 +28,11 @@ impl Zengin {
     /// let zengin = Zengin::new().unwrap();
     /// ```
     pub fn new() -> Result<Zengin, Box<dyn Error>> {
-        let bank_file = join_paths(&["source-data", "data", "banks.json"])?;
+        let bank_file = join_paths(&["banks.json"])?;
         let mut banks = load_banks_from_file(bank_file.to_str().unwrap())?;
 
         for bank in banks.values_mut() {
-            let branch_file = join_paths(&[
-                "source-data",
-                "data",
-                "branches",
-                &format!("{}.json", bank.code),
-            ])?;
+            let branch_file = join_paths(&["branches", &format!("{}.json", bank.code)])?;
             let branches = load_branches_from_file(branch_file.to_str().unwrap())?;
             bank.branches = branches;
         }
@@ -393,14 +391,20 @@ fn parse_branches(json_data: &str) -> std::result::Result<BranchMap, Box<dyn Err
 }
 
 fn load_banks_from_file(file_path: &str) -> std::result::Result<BankMap, Box<dyn Error>> {
-    let json_data = std::fs::read_to_string(file_path)?;
+    let json_data = read_data_file(file_path)?;
     let banks = parse_banks(&json_data)?;
     Ok(banks)
 }
 
 fn load_branches_from_file(file_path: &str) -> std::result::Result<BranchMap, Box<dyn Error>> {
-    let json_data = std::fs::read_to_string(file_path)?;
+    let json_data = read_data_file(file_path)?;
     parse_branches(&json_data)
+}
+
+fn read_data_file(file_path: &str) -> std::result::Result<String, Box<dyn Error>> {
+    let data = DATA_DIR.get_file(file_path).unwrap();
+    let data_str = std::str::from_utf8(data.contents())?;
+    Ok(data_str.to_string())
 }
 
 fn join_paths(parts: &[&str]) -> Result<PathBuf, Box<dyn std::error::Error>> {
