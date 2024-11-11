@@ -1,6 +1,6 @@
 use include_dir::{include_dir, Dir};
 use serde::{Deserialize, Serialize};
-use std::{collections::HashMap, env, error::Error, path::PathBuf};
+use std::{collections::HashMap, error::Error};
 
 static DATA_DIR: Dir<'_> = include_dir!("$CARGO_MANIFEST_DIR/source-data/data");
 
@@ -28,12 +28,11 @@ impl Zengin {
     /// let zengin = Zengin::new().unwrap();
     /// ```
     pub fn new() -> Result<Zengin, Box<dyn Error>> {
-        let bank_file = join_paths(&["banks.json"])?;
-        let mut banks = load_banks_from_file(bank_file.to_str().unwrap())?;
+        let mut banks = load_banks_from_file("banks.json")?;
 
         for bank in banks.values_mut() {
-            let branch_file = join_paths(&["branches", &format!("{}.json", bank.code)])?;
-            let branches = load_branches_from_file(branch_file.to_str().unwrap())?;
+            let branches =
+                load_branches_from_file(format!("branches/{}.json", bank.code).as_str())?;
             bank.branches = branches;
         }
 
@@ -405,14 +404,6 @@ fn read_data_file(file_path: &str) -> std::result::Result<String, Box<dyn Error>
     let data = DATA_DIR.get_file(file_path).unwrap();
     let data_str = std::str::from_utf8(data.contents())?;
     Ok(data_str.to_string())
-}
-
-fn join_paths(parts: &[&str]) -> Result<PathBuf, Box<dyn std::error::Error>> {
-    let mut path = env::current_dir()?;
-    for part in parts {
-        path.push(part);
-    }
-    Ok(path)
 }
 
 #[cfg(test)]
