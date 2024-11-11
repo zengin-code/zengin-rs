@@ -2,6 +2,18 @@
 name = "zengin"
 version = "0.1.0"
 edition = "2021"
+description = "The Rust library for Zengin Code."
+keywords = [ "zengin", "bank" ]
+categories = [ "finance" ]
+license = "MIT"
+authors = ["Hiroyuki Fudaba <delihiros@gmail.com>"]
+readme = "README.md"
+
+documentation = "https://docs.rs/zengin/"
+homepage = "https://github.com/delihiros/zengin"
+repository = "https://github.com/delihiros/zengin"
+
+
 
 [dependencies]
 regex = "1.11.1"
