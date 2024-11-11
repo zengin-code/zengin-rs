@@ -1,6 +1,6 @@
 [package]
 name = "zengin"
-version = "0.1.1"
+version = "1.0.0"
 edition = "2021"
 description = "The Rust library for Zengin Code."
 keywords = [ "zengin", "bank" ]

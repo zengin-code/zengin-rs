@@ -22,3 +22,11 @@ for bank in banks {
     println!("Found bank: {}", bank.name);
 }
 ```
+
+# Data
+
+This project depends heavily on the following projects.
+Big thanks to zengin-code community.
+
+- https://github.com/zengin-code/source-data
+- http://ykaku.com/ginkokensaku/index.php
