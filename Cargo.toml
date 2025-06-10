@@ -1,6 +1,6 @@
 [package]
 name = "zengin"
-version = "1.0.3"
+version = "1.1.0"
 edition = "2021"
 description = "The Rust library for Zengin Code."
 keywords = [ "zengin", "bank" ]
@@ -10,8 +10,8 @@ authors = ["Hiroyuki Fudaba <delihiros@gmail.com>"]
 readme = "README.md"
 
 documentation = "https://docs.rs/zengin/"
-homepage = "https://github.com/delihiros/zengin"
-repository = "https://github.com/delihiros/zengin"
+homepage = "https://github.com/zengin-code/zengin-rs"
+repository = "https://github.com/zengin-code/zengin-rs"
 
 
 
