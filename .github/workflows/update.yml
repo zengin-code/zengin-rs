@@ -60,4 +60,8 @@ jobs:
         env:
           CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
         run: |
+          git fetch --all
+          git checkout main
+          git pull origin main
+          git submodule update --init --recursive --remote
           cargo publish --token "$CARGO_REGISTRY_TOKEN" || echo "cargo publish failed (possibly already published)"
